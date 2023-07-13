@@ -3,9 +3,9 @@ import preprocessor,helper
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-st.sidebar.title("Whatsapp Chat Analyzer")
+st.sidebar.title("Whatsapp Chat Data Analysis")
 
-uploaded_file = st.sidebar.file_uploader("Choose a file")
+uploaded_file = st.sidebar.file_uploader("Upload a file")
 if uploaded_file is not None:
     bytes_data = uploaded_file.getvalue()
     data = bytes_data.decode("utf-8")
@@ -13,8 +13,8 @@ if uploaded_file is not None:
 
     # fetch unique users
     user_list = df['user'].unique().tolist()
-    if 'group_notification' in user_list:
-        user_list.remove('group_notification')
+    if 'group_all_users' in user_list:
+        user_list.remove('group_all_users')
     user_list.sort()
     user_list.insert(0,"Overall")
 
@@ -34,10 +34,10 @@ if uploaded_file is not None:
             st.header("Total Words")
             st.title(words)
         with col3:
-            st.header("Media Shared")
+            st.header("Total Media Shared")
             st.title(num_media_messages)
         with col4:
-            st.header("Links Shared")
+            st.header("Total Links Shared")
             st.title(num_links)
 
         # monthly timeline
@@ -61,7 +61,7 @@ if uploaded_file is not None:
         col1,col2 = st.columns(2)
 
         with col1:
-            st.header("Most busy day")
+            st.header("App Usage Per Day")
             busy_day = helper.week_activity_map(selected_user,df)
             fig,ax = plt.subplots()
             ax.bar(busy_day.index,busy_day.values,color='purple')
@@ -84,7 +84,7 @@ if uploaded_file is not None:
 
         # finding the busiest users in the group(Group level)
         if selected_user == 'Overall':
-            st.title('Most Busy Users')
+            st.title('Busy Users Comparison')
             x,new_df = helper.most_busy_users(df)
             fig, ax = plt.subplots()
 
@@ -127,14 +127,3 @@ if uploaded_file is not None:
             fig,ax = plt.subplots()
             ax.pie(emoji_df[1].head(),labels=emoji_df[0].head(),autopct="%0.2f")
             st.pyplot(fig)
-
-
-
-
-
-
-
-
-
-
-
